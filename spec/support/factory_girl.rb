@@ -6,6 +6,9 @@ RSpec.configure do |config|
       DatabaseCleaner.start
       # Test factories in spec/factories are working.
       FactoryGirl.lint
+    rescue
+        Rails.logger.error $ERROR_INFO
+        raise $ERROR_INFO
     ensure
       DatabaseCleaner.clean
     end

@@ -3,7 +3,6 @@ source 'https://rubygems.org'
 gem 'rails', '~> 5.0.0', '>= 5.0.0.1'
 gem 'puma', '~> 3.0'
 gem 'pg', '~> 0.18'
-gem 'sqlite3'
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'nokogiri', '1.7.0.1', require: false
 gem 'kaminari', '0.17.0'
@@ -15,9 +14,10 @@ group :development, :test do
   gem 'bullet', '5.4.0'
   gem 'rubocop', '0.42.0', require: false
   gem 'rspec-rails', '3.5.2'
-  gem 'factory_girl_rails', '4.7.0', require: false
-  gem 'rubycritic', '2.9.4', require: false
-  gem 'brakeman', '3.4.0', require: false
+  gem 'factory_girl_rails', '4.7.0'
+  gem 'guard-rspec'
+  gem 'guard'
+  gem 'webmock', ' 2.1.0', require: false
 end
 
 group :development do

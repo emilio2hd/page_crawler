@@ -8,6 +8,7 @@ require 'rspec/rails'
 
 require 'ffaker'
 require 'factory_girl'
+require 'webmock/rspec'
 
 if ENV['RAILS_ENV'] == 'test'
   require 'simplecov'
