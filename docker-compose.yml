@@ -1,0 +1,52 @@
+version: '2'
+
+services:
+  db:
+    image: postgres:9.4
+    container_name: pc-db
+    ports:
+      - "54321:5432"
+    environment:
+      - POSTGRES_USER=page_crawler
+      - POSTGRES_PASSWORD=page_crawler
+      - POSTGRES_DB=page_crawler
+
+  redis:
+    image: redis
+    container_name: pc-redis
+    ports:
+      - "63790:6379"
+
+  web:
+    image: page_crawler_web
+    container_name: pc-web
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - PAGE_CRAWLER_DB_HOST=db
+      - PAGE_CRAWLER_DB_NAME=page_crawler
+      - PAGE_CRAWLER_DB_USER=page_crawler
+      - PAGE_CRAWLER_DB_PASSWORD=page_crawler
+      - REDIS_URL=redis://redis:6379/0
+      - SECRET_KEY_BASE=c3e7ff31c3c0edd8a7b41fb886078f1886996aa22f129ce396448de8e77fcb37ba9a7e4effee75f527ce04e579b1bf1be25f4efea870daa349c7560be48a35c0
+    links:
+      - db
+      - redis
+
+  sidekiq:
+    image: page_crawler_web
+    container_name: pc-sidekiq
+    command: bundle exec sidekiq
+    environment:
+      - PAGE_CRAWLER_DB_HOST=db
+      - PAGE_CRAWLER_DB_NAME=page_crawler
+      - PAGE_CRAWLER_DB_USER=page_crawler
+      - PAGE_CRAWLER_DB_PASSWORD=page_crawler
+      - REDIS_URL=redis://redis:6379/0
+      - SECRET_KEY_BASE=c3e7ff31c3c0edd8a7b41fb886078f1886996aa22f129ce396448de8e77fcb37ba9a7e4effee75f527ce04e579b1bf1be25f4efea870daa349c7560be48a35c0
+    volumes_from:
+      - web
+    links:
+      - db
+      - redis
